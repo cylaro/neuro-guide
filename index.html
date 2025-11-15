@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Гид по нейросетям — какие ИИ для чего нужны</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Простой гид по популярным нейросетям: ChatGPT, Claude, Qwen, Perplexity, Duck.ai, Grok, Copilot, Gemini, Sora, DeepSeek." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-alt: #070b18;
+      --card: #0b1020;
+      --accent: #4f46e5;
+      --accent-soft: rgba(79, 70, 229, 0.15);
+      --accent-gradient: linear-gradient(135deg, #4f46e5, #22c55e);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --border: #1f2933;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 16px 36px rgba(0,0,0,0.45);
+      --transition-fast: 0.18s ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at top left, #1d2440 0, transparent 55%),
+        radial-gradient(circle at bottom right, #122433 0, transparent 55%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      padding: 0 16px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(5,8,22,0.96), rgba(5,8,22,0.78), transparent);
+      border-bottom: 1px solid rgba(148,163,184,0.18);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      gap: 12px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .logo-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: conic-gradient(from 160deg, #22c55e, #4f46e5, #06b6d4, #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 14px rgba(59,130,246,0.6);
+      flex-shrink: 0;
+    }
+
+    .logo-text-main {
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .logo-text-sub {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      border-color: rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.9);
+      transform: translateY(-1px);
+    }
+
+    .nav-cta {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .nav-links::-webkit-scrollbar {
+        height: 3px;
+      }
+
+      .nav-links::-webkit-scrollbar-thumb {
+        background: rgba(148,163,184,0.6);
+        border-radius: 999px;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .logo-text-sub {
+        display: none;
+      }
+    }
+
+    /* Buttons */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-size: 13px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      cursor: pointer;
+      gap: 8px;
+      white-space: nowrap;
+      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .btn-primary {
+      background-image: var(--accent-gradient);
+      color: #0b1020;
+      font-weight: 600;
+      box-shadow: 0 10px 24px rgba(79,70,229,0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 34px rgba(79,70,229,0.65);
+    }
+
+    .btn-ghost {
+      border-color: rgba(148,163,184,0.5);
+      color: var(--muted);
+      background: rgba(15,23,42,0.8);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      background: rgba(15,23,42,0.95);
+      transform: translateY(-1px);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    /* Hero */
+
+    .hero {
+      padding: 26px 0 24px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.3fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      .hero-inner {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    .hero-kicker {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .hero-kicker-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,0.9);
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 700;
+      line-height: 1.08;
+      margin: 0 0 14px;
+    }
+
+    .hero-title span {
+      background: var(--accent-gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 14px;
+    }
+
+    .hero-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.3);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .hero-highlight span.badge {
+      background: rgba(34,197,94,0.12);
+      border-radius: 999px;
+      padding: 3px 8px;
+      color: #bbf7d0;
+      font-size: 11px;
+      border: 1px solid rgba(74,222,128,0.45);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .hero-footnote {
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 420px;
+    }
+
+    .hero-footnote a {
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+
+    .hero-footnote a:hover {
+      text-decoration: underline;
+    }
+
+    .hero-visual {
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 0 0, rgba(79,70,229,0.4), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(16,185,129,0.3), transparent 55%),
+        var(--bg-alt);
+      padding: 16px 16px 18px;
+      border: 1px solid rgba(148,163,184,0.22);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-visual-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .hero-chip {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(15,23,42,0.88);
+      border: 1px solid rgba(148,163,184,0.4);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,1);
+    }
+
+    .hero-model-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .hero-model-pill {
+      padding: 8px 9px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(148,163,184,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hero-model-pill strong {
+      font-size: 12px;
+    }
+
+    .hero-model-pill span {
+      color: var(--muted);
+    }
+
+    .hero-visual-floating {
+      position: absolute;
+      right: 10px;
+      bottom: 12px;
+      font-size: 11px;
+      backdrop-filter: blur(10px);
+      background: rgba(15,23,42,0.88);
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,0.3);
+      padding: 7px 9px;
+      color: var(--muted);
+      max-width: 170px;
+    }
+
+    @media (max-width: 880px) {
+      .hero-visual {
+        order: -1;
+      }
+
+      .hero-visual-floating {
+        position: static;
+        margin-top: 10px;
+      }
+    }
+
+    /* Sections */
+
+    .section {
+      padding: 12px 0 30px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .section-description {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    /* Filters */
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .filter-btn {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.8);
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .filter-btn span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.8);
+    }
+
+    .filter-btn.active {
+      color: #0b1020;
+      background-image: var(--accent-gradient);
+      border-color: transparent;
+      box-shadow: 0 10px 30px rgba(79,70,229,0.6);
+      transform: translateY(-1px);
+    }
+
+    .filter-btn.active span.dot {
+      background: rgba(15,23,42,0.85);
+    }
+
+    .filters-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    /* Grid / cards */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    .model-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      background:
+        radial-gradient(circle at top left, rgba(79,70,229,0.22), transparent 58%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.16), transparent 55%),
+        var(--card);
+      border: 1px solid rgba(148,163,184,0.16);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow var(--transition-fast), border-color var(--transition-fast), background 0.3s ease-out;
+    }
+
+    .model-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .model-card:hover {
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+      border-color: rgba(129,140,248,0.8);
+      background:
+        radial-gradient(circle at top left, rgba(79,70,229,0.32), transparent 65%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.2), transparent 55%),
+        #050816;
+    }
+
+    .model-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .model-title {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .model-badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.3);
+      color: var(--muted);
+      background: rgba(15,23,42,0.9);
+      white-space: nowrap;
+    }
+
+    .model-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: var(--muted);
+    }
+
+    .model-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .model-description {
+      font-size: 13px;
+      color: #e5e7eb;
+      margin-bottom: 6px;
+    }
+
+    .model-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .model-list li {
+      margin-bottom: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .model-list li::before {
+      content: "•";
+      color: rgba(165,180,252,0.95);
+      margin-top: 1px;
+    }
+
+    .model-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .btn-link {
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.85);
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .btn-link strong {
+      color: #e5e7eb;
+    }
+
+    .btn-link:hover {
+      background: rgba(15,23,42,1);
+      border-color: rgba(129,140,248,0.9);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .btn-link.app {
+      background: rgba(15,23,42,0.9);
+    }
+
+    .model-footer-note {
+      font-size: 10px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .model-footer-note span.em {
+      color: rgba(196,181,253,0.95);
+    }
+
+    .model-flag-danger {
+      font-size: 10px;
+      color: var(--danger);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .model-flag-danger::before {
+      content: "⚠️";
+    }
+
+    /* Info sections */
+
+    .info-box {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.3);
+      background: rgba(15,23,42,0.9);
+      padding: 14px 14px 12px;
+      display: grid;
+      grid-template-columns: minmax(0,1.6fr) minmax(0,1.1fr);
+      gap: 18px;
+      font-size: 13px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .info-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .info-list {
+      margin: 0;
+      padding-left: 16px;
+      color: var(--muted);
+    }
+
+    .info-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(15,23,42,0.88);
+      color: var(--muted);
+    }
+
+    .chip.good {
+      border-color: rgba(74,222,128,0.6);
+      color: #bbf7d0;
+      background: rgba(22,163,74,0.15);
+    }
+
+    .chip.warn {
+      border-color: rgba(251,191,36,0.7);
+      color: #fef9c3;
+      background: rgba(251,191,36,0.1);
+    }
+
+    .chip.danger {
+      border-color: rgba(239,68,68,0.8);
+      color: #fee2e2;
+      background: rgba(239,68,68,0.12);
+    }
+
+    @media (max-width: 768px) {
+      .info-box {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    .contact-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148,163,184,0.3);
+      background: rgba(15,23,42,0.92);
+      padding: 14px 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .contact-main {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .contact-main-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .contact-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .contact-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .contact-handle {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      background: rgba(15,23,42,0.85);
+      border-radius: var(--radius-pill);
+      padding: 6px 10px;
+      border: 1px dashed rgba(148,163,184,0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #e5e7eb;
+    }
+
+    .contact-handle span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34,197,94,1);
+    }
+
+    .contact-footer {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid rgba(148,163,184,0.3);
+      padding: 14px 0 18px;
+      font-size: 11px;
+      color: var(--muted);
+      background: rgba(5,8,22,0.96);
+    }
+
+    footer .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #e5e7eb;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 720px) {
+      .hero {
+        padding-top: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header id="top">
+    <div class="container">
+      <div class="nav">
+        <div class="nav-left">
+          <div class="logo-circle">AI</div>
+          <div>
+            <div class="logo-text-main">Гид по нейросетям</div>
+            <div class="logo-text-sub">для тех, кто «ничего не понимает» 🙂</div>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#catalog">Каталог ИИ</a>
+          <a href="#how-to-choose">Как выбрать</a>
+          <a href="#reliability">Если не работает</a>
+          <a href="#contact">Telegram</a>
+        </nav>
+        <div class="nav-cta">
+          Обновлено: ноябрь&nbsp;2025
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-inner">
+          <div>
+            <div class="hero-kicker">
+              <span class="hero-kicker-dot"></span>
+              <span>Разберёмся с ИИ по-простому</span>
+            </div>
+            <h1 class="hero-title">
+              Какие <span>нейросети</span> есть сейчас<br />и для чего они подходят?
+            </h1>
+            <p class="hero-subtitle">
+              Ниже — короткий, но ёмкий обзор популярных моделей: что это, в чём сильны и
+              когда их имеет смысл использовать. Без рейтингов, только описание и сценарии.
+            </p>
+
+            <div class="hero-highlight">
+              <span class="badge">Важно</span>
+              <span>Это не сравнение «кто лучше», а нейтральный гид по сильным сторонам и сферам применения.</span>
+            </div>
+
+            <div class="hero-actions">
+              <a href="#catalog" class="btn btn-primary">Открыть каталог нейросетей</a>
+              <a href="#contact" class="btn btn-ghost">Задать вопрос в Telegram</a>
+            </div>
+            <p class="hero-footnote">
+              Если какой-то сервис не открывается или «лежит», можно попробовать рекомендации по DNS и доступу на
+              сайте <a href="https://xbox-dns.ru" target="_blank" rel="noopener noreferrer">xbox-dns.ru</a>.
+            </p>
+          </div>
+
+          <aside class="hero-visual">
+            <div class="hero-visual-header">
+              <div class="hero-chip">
+                <span class="hero-chip-dot"></span>
+                <span>Навигатор по ИИ: от нуля до уверенного пользователя</span>
+              </div>
+            </div>
+
+            <div class="hero-model-list">
+              <div class="hero-model-pill">
+                <strong>Чат-ассистенты</strong>
+                <span>ChatGPT, Claude, Qwen, Grok, Copilot, Gemini, DeepSeek</span>
+              </div>
+              <div class="hero-model-pill">
+                <strong>Поиск &amp; источники</strong>
+                <span>Perplexity, Duck.ai</span>
+              </div>
+              <div class="hero-model-pill">
+                <strong>Код и работа</strong>
+                <span>Copilot, ChatGPT, Claude, Qwen, Grok</span>
+              </div>
+              <div class="hero-model-pill">
+                <strong>Видео</strong>
+                <span>Sora (OpenAI) — текст → ролики</span>
+              </div>
+            </div>
+
+            <div class="hero-visual-floating">
+              С любой из этих моделей можно начать, но проще всего — с ChatGPT, Gemini или Copilot. Ниже — чем они отличаются по задачам.
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATALOG -->
+    <section id="catalog" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Каталог нейросетей</div>
+            <div class="section-description">
+              Фильтры помогут показать только чат-ассистентов, поиск или модели для кода.
+              Внутри каждой карточки — описание, сильные стороны и официальные ссылки.
+            </div>
+          </div>
+        </div>
+
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">
+            <span class="dot"></span>Все
+          </button>
+          <button class="filter-btn" data-filter="chat">
+            <span class="dot"></span>Чат-ассистенты
+          </button>
+          <button class="filter-btn" data-filter="search">
+            <span class="dot"></span>Поиск по интернету
+          </button>
+          <button class="filter-btn" data-filter="coding">
+            <span class="dot"></span>Код и разработка
+          </button>
+          <button class="filter-btn" data-filter="office">
+            <span class="dot"></span>Учёба и офис
+          </button>
+          <button class="filter-btn" data-filter="media">
+            <span class="dot"></span>Изображения &amp; видео
+          </button>
+          <button class="filter-btn" data-filter="high-risk">
+            <span class="dot"></span>С повышенными рисками
+          </button>
+        </div>
+        <div class="filters-hint">
+          Если вы совсем новичок — начните с ChatGPT, Claude, Gemini или Copilot. Остальное можно добавить позже.
+        </div>
+
+        <div class="grid">
+
+          <!-- ChatGPT -->
+          <article class="model-card" data-category="chat coding office" id="chatgpt">
+            <header class="model-header">
+              <div>
+                <div class="model-title">ChatGPT (OpenAI)</div>
+                <div class="model-tags">
+                  <span class="model-pill">универсальный ассистент</span>
+                  <span class="model-pill">тексты • код • файлы • голос</span>
+                </div>
+              </div>
+              <div class="model-badge">Для старта</div>
+            </header>
+            <p class="model-description">
+              Универсальный чат-помощник: объясняет сложные темы, пишет тексты, помогает с кодом и
+              работает с файлами и изображениями.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> дружелюбный интерфейс, мощные модели, вложения (файлы, картинки), развитая экосистема.</li>
+              <li><strong>Лучше всего подходит для:</strong> обучения, писем и документов, идей, программирования и бытовых задач.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Web-версия</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/chatgpt/id6448311069" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=com.openai.chatgpt" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">Самый простой вход в мир ИИ для большинства задач.</span>
+              <span>Русский язык поддерживается.</span>
+            </div>
+          </article>
+
+          <!-- Claude -->
+          <article class="model-card" data-category="chat coding office" id="claude">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Claude (Anthropic)</div>
+                <div class="model-tags">
+                  <span class="model-pill">«мышлящий» собеседник</span>
+                  <span class="model-pill">длинные документы • код</span>
+                </div>
+              </div>
+              <div class="model-badge">Глубокое мышление</div>
+            </header>
+            <p class="model-description">
+              Чат-ассистент с акцентом на аккуратность и безопасность. Удобен для анализа длинных документов,
+              договоров и сложных технических текстов.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> хорошо держит контекст, аккуратные формулировки, работа с большими файлами и проектами.</li>
+              <li><strong>Лучше всего подходит для:</strong> отчётов, аналитики, юридических и технических задач, программирования.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://claude.ai" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Web-версия</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/claude-by-anthropic/id6473753684" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=com.anthropic.claude" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">Часто выбирают для серьёзных текстов и анализа документов.</span>
+              <span>Интерфейс в основном на английском, русский понимает.</span>
+            </div>
+          </article>
+
+          <!-- Qwen -->
+          <article class="model-card" data-category="chat coding office" id="qwen">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Qwen / Qwen Chat (Alibaba)</div>
+                <div class="model-tags">
+                  <span class="model-pill">многоязычный ассистент</span>
+                  <span class="model-pill">логика • математика</span>
+                </div>
+              </div>
+              <div class="model-badge">Для экспериментов</div>
+            </header>
+            <p class="model-description">
+              Семейство моделей от Alibaba, доступное через Qwen Chat. Сильные стороны — рассуждения,
+              математика и многоязычие.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> продвинутые модели рассуждения, поддержка нескольких языков, открытые веса для разработчиков.</li>
+              <li><strong>Лучше всего подходит для:</strong> опытных пользователей, задач по программированию и исследовательской работы.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://chat.qwen.ai" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Qwen Chat</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/qwen-chat-ask-qwen-know-more/id6743778442" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=ai.qwenlm.chat.android" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">Инструмент скорее для продвинутых и разработчиков.</span>
+              <span>Часть интерфейсов ориентирована на азиатский рынок.</span>
+            </div>
+          </article>
+
+          <!-- Perplexity -->
+          <article class="model-card" data-category="search chat office" id="perplexity">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Perplexity</div>
+                <div class="model-tags">
+                  <span class="model-pill">«ответный» поиск</span>
+                  <span class="model-pill">источники • ссылки на статьи</span>
+                </div>
+              </div>
+              <div class="model-badge">Для исследований</div>
+            </header>
+            <p class="model-description">
+              ИИ-поиск, который сразу показывает, откуда взята информация: статьи, сайты и документы.
+              Удобен, когда нужно проверить факты и копнуть глубже.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> встроенный поиск по интернету, ссылки на источники, режим глубокого исследования.</li>
+              <li><strong>Лучше всего подходит для:</strong> обзора тем, подготовки докладов и проверки фактов.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Web-версия</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/perplexity-ai-search-chat/id1668000334" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=ai.perplexity.app.android" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">Выбор, если важно «откуда это взято».</span>
+              <span>Помните, что ответы строятся по открытому вебу.</span>
+            </div>
+          </article>
+
+          <!-- Duck.ai -->
+          <article class="model-card" data-category="search chat office" id="duckai">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Duck.ai (DuckDuckGo AI Chat)</div>
+                <div class="model-tags">
+                  <span class="model-pill">приватные запросы</span>
+                  <span class="model-pill">несколько моделей через один интерфейс</span>
+                </div>
+              </div>
+              <div class="model-badge">Приватность</div>
+            </header>
+            <p class="model-description">
+              Чат от DuckDuckGo, который проксирует запросы к разным моделям и анонимизирует их.
+              Удобен, если важна конфиденциальность.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> анонимизация запросов, доступ к нескольким моделям (Claude, GPT-семейство, Llama и др.), интеграция с приватным поиском DuckDuckGo.</li>
+              <li><strong>Лучше всего подходит для:</strong> быстрых справок, перевода и поиска с упором на приватность.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://duck.ai" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Web-версия (duck.ai)</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/duckduckgo-browser-w-duck-ai/id663592361" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store (браузер)</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=com.duckduckgo.mobile.android" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play (браузер)</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">ИИ-чат встроен в приложения DuckDuckGo.</span>
+              <span>Фокус — на приватности, а не на самых тяжёлых задачах.</span>
+            </div>
+          </article>
+
+          <!-- Grok -->
+          <article class="model-card" data-category="chat search coding" id="grok">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Grok (xAI)</div>
+                <div class="model-tags">
+                  <span class="model-pill">данные из X</span>
+                  <span class="model-pill">немного с юмором</span>
+                </div>
+              </div>
+              <div class="model-badge">Актуальные события</div>
+            </header>
+            <p class="model-description">
+              Ассистент от xAI с доступом к данным соцсети X. Заточен под актуальные события, тренды и
+              умеет писать код.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> доступ к свежим данным из X, собственные модели Grok, хороший уровень кода.</li>
+              <li><strong>Лучше всего подходит для:</strong> обсуждения трендов, новостей и технических задач.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://grok.com" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Grok Web</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/grok/id6670324846" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">Логичный выбор для активных пользователей X.</span>
+              <span>Интерфейс — в основном английский.</span>
+            </div>
+          </article>
+
+          <!-- Copilot -->
+          <article class="model-card" data-category="chat coding office" id="copilot">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Microsoft Copilot</div>
+                <div class="model-tags">
+                  <span class="model-pill">Windows &amp; Office</span>
+                  <span class="model-pill">код • документы • презентации</span>
+                </div>
+              </div>
+              <div class="model-badge">Для работы</div>
+            </header>
+            <p class="model-description">
+              Ассистент от Microsoft, встроенный в Windows, Edge и Microsoft 365: Word, Excel, PowerPoint
+              и другие приложения.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> глубокая интеграция с офисными программами, помощь в письмах, отчётах, презентациях и коде.</li>
+              <li><strong>Лучше всего подходит для:</strong> офисной работы, учёбы и проектов в экосистеме Microsoft.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://copilot.microsoft.com" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Web-версия</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/microsoft-copilot/id6472538445" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=com.microsoft.copilot" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">Если вы живёте в Windows и Microsoft 365 — это «родной» ассистент.</span>
+              <span>Есть русская локализация и голосовой ввод.</span>
+            </div>
+          </article>
+
+          <!-- Gemini -->
+          <article class="model-card" data-category="chat search coding office media" id="gemini">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Gemini (Google)</div>
+                <div class="model-tags">
+                  <span class="model-pill">Google-ассистент нового поколения</span>
+                  <span class="model-pill">поиск • Android • Workspace</span>
+                </div>
+              </div>
+              <div class="model-badge">Интеграция с Google</div>
+            </header>
+            <p class="model-description">
+              Семейство моделей от Google, работающее в браузере, на телефоне и внутри сервисов Google —
+              от Gmail до Документов и Таблиц.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> связка с Google Search, Gmail и другими сервисами, мобильные приложения с голосовым режимом.</li>
+              <li><strong>Лучше всего подходит для:</strong> пользователей Android и Google Workspace, планирования и работы с файлами.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Web-версия</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/google-gemini/id6477489729" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=com.google.android.apps.bard" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">На новых Android-устройствах может заменять Google Assistant.</span>
+              <span>Удобен, если вы активно пользуетесь сервисами Google.</span>
+            </div>
+          </article>
+
+          <!-- Sora -->
+          <article class="model-card" data-category="media" id="sora">
+            <header class="model-header">
+              <div>
+                <div class="model-title">Sora (OpenAI, видео)</div>
+                <div class="model-tags">
+                  <span class="model-pill">текст → видео</span>
+                  <span class="model-pill">креатив • визуальные концепты</span>
+                </div>
+              </div>
+              <div class="model-badge">Генерация видео</div>
+            </header>
+            <p class="model-description">
+              Модель генерации видео по текстовому описанию. Позволяет создавать короткие ролики
+              для концептов и сторибордов.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> реалистичная анимация, разные стили (кино, анимация, сюрреализм), удобна для визуального прототипирования.</li>
+              <li><strong>Лучше всего подходит для:</strong> дизайнеров, маркетологов и продюсеров контента.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://openai.com/sora" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Страница Sora</strong>
+              </a>
+              <a class="btn-link" href="https://platform.openai.com/docs/guides/video-generation" target="_blank" rel="noopener noreferrer">
+                <span>🧩</span><strong>Документация</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="em">Скорее про видео, чем про чат-общение.</span>
+              <span>Доступ и ограничения зависят от региона и тарифа.</span>
+            </div>
+          </article>
+
+          <!-- DeepSeek (в конце) -->
+          <article class="model-card" data-category="chat coding high-risk" id="deepseek">
+            <header class="model-header">
+              <div>
+                <div class="model-title">DeepSeek</div>
+                <div class="model-tags">
+                  <span class="model-pill">китайский ИИ-ассистент</span>
+                  <span class="model-pill">открытые веса • низкая цена</span>
+                </div>
+              </div>
+              <div class="model-badge">Только для опытных</div>
+            </header>
+            <p class="model-description">
+              Китайское семейство моделей и чат-сервис с открытыми весами и агрессивным ценообразованием.
+              Технически модели сильные, но вокруг сервиса много серьёзных вопросов про безопасность,
+              данные и цензуру, поэтому для обычного пользователя это часто плохой выбор.
+            </p>
+            <ul class="model-list">
+              <li><strong>Сильные стороны:</strong> высокие показатели на тестах, open-weight модели, низкая стоимость API.</li>
+              <li><strong>Риски и ограничения:</strong> вопросы к конфиденциальности и передаче данных, возможная политическая цензура,
+                сообщения о небезопасном коде и спорном контенте. Без понимания рисков использовать его опасно.</li>
+            </ul>
+            <div class="model-links">
+              <a class="btn-link" href="https://chat.deepseek.com" target="_blank" rel="noopener noreferrer">
+                <span>🌐</span><strong>Web-чат</strong>
+              </a>
+              <a class="btn-link app" href="https://apps.apple.com/app/deepseek-ai-assistant/id6737597349" target="_blank" rel="noopener noreferrer">
+                <span></span><strong>App Store</strong>
+              </a>
+              <a class="btn-link app" href="https://play.google.com/store/apps/details?id=com.deepseek.chat" target="_blank" rel="noopener noreferrer">
+                <span>🤖</span><strong>Google Play</strong>
+              </a>
+              <a class="btn-link" href="https://download.deepseek.com/app/" target="_blank" rel="noopener noreferrer">
+                <span>⬇️</span><strong>Страница загрузки</strong>
+              </a>
+            </div>
+            <div class="model-footer-note">
+              <span class="model-flag-danger">
+                Новичкам и компаниям с жёсткими требованиями к безопасности лучше избегать DeepSeek или запускать только в изолированной среде.
+              </span>
+              <span>Перед использованием обязательно изучите юридические и технические риски.</span>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO CHOOSE -->
+    <section id="how-to-choose" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Как выбрать нейросеть под свою задачу</div>
+            <div class="section-description">
+              Это не рейтинг, а краткая шпаргалка: к какой модели имеет смысл обратиться в первую очередь под конкретный сценарий.
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div>
+            <div class="info-title">Самый простой путь для новичка</div>
+            <ul class="info-list">
+              <li><strong>«Хочу один умный чат для всего»</strong> — ChatGPT, Gemini или Copilot, при желании добавить Claude.</li>
+              <li><strong>«Боюсь ошибиться в фактах»</strong> — подключить Perplexity или Duck.ai, чтобы видеть источники.</li>
+              <li><strong>«Нужно разобрать длинный документ / договор»</strong> — Claude + ChatGPT.</li>
+              <li><strong>«Нужно видео по тексту»</strong> — это уже Sora, а не классический чат-ассистент.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="info-label">Кратко по типам задач</div>
+            <div class="chips-row" style="margin-bottom:6px;">
+              <span class="chip good">Чат и разговоры: ChatGPT, Claude, Gemini, Copilot, Grok, Qwen</span>
+            </div>
+            <div class="chips-row" style="margin-bottom:6px;">
+              <span class="chip good">Факты и источники: Perplexity, Duck.ai</span>
+            </div>
+            <div class="chips-row" style="margin-bottom:6px;">
+              <span class="chip good">Код и разработка: ChatGPT, Claude, Copilot, Qwen, Grok</span>
+            </div>
+            <div class="chips-row" style="margin-bottom:6px;">
+              <span class="chip good">Видео и визуал: Sora</span>
+            </div>
+            <div class="chips-row">
+              <span class="chip warn">Эксперименты и open-weight: Qwen</span>
+              <span class="chip danger">С повышенными рисками: DeepSeek</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RELIABILITY -->
+    <section id="reliability" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Если сервис не открывается или «ведёт себя странно»</div>
+            <div class="section-description">
+              Иногда ИИ-сервисы недоступны из-за блокировок, региональных ограничений или технических работ.
+              Что можно сделать в таких ситуациях.
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div>
+            <div class="info-title">1. Проверить, не лежит ли сам сервис</div>
+            <ul class="info-list">
+              <li>Откройте сайт с мобильного интернета и с Wi-Fi. Если не работает нигде, проблема, скорее всего, на стороне сервиса.</li>
+              <li>Посмотрите статус-страницу или официальные соцсети сервиса — там обычно пишут о сбоях.</li>
+            </ul>
+            <div class="info-title" style="margin-top:10px;">2. Настроить DNS / обход блокировок</div>
+            <ul class="info-list">
+              <li>Если сайт блокируется провайдером, изучите инструкции на
+                <a href="https://xbox-dns.ru" target="_blank" rel="noopener noreferrer" style="color:#a5b4fc;">xbox-dns.ru</a>
+                — там описаны варианты с изменением DNS.</li>
+              <li>Любые обходы блокировок вы делаете на свой риск: не ставьте подозрительные программы.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="info-title">3. Временно «пересесть» на другой ИИ</div>
+            <ul class="info-list">
+              <li><strong>Чаты:</strong> ChatGPT ↔ Claude ↔ Gemini ↔ Copilot в большинстве базовых задач взаимозаменяемы.</li>
+              <li><strong>Поиск:</strong> если Perplexity недоступен — используйте Duck.ai или связку «любой чат + обычный поиск».</li>
+              <li><strong>Видео:</strong> если Sora недоступна, можно комбинировать ИИ-изображения с классическим видеомонтажом.</li>
+            </ul>
+            <div style="margin-top:8px;font-size:12px;color:var(--muted);">
+              Доступ к конкретным моделям зависит от страны и законодательства. Всегда учитывайте местные правила.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-title">Связаться с автором сайта</div>
+            <div class="section-description">
+              Если вы потерялись во всём этом зоопарке нейросетей, напишите автору в Telegram — можно просто описать свою задачу.
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-main">
+            <div class="contact-main-left">
+              <div class="contact-title">Нужна подсказка по ИИ под вашу задачу?</div>
+              <div class="contact-sub">
+                Кратко расскажите, что хотите делать (учёба, работа, творчество, код) — получите рекомендацию, с чего начать.
+              </div>
+              <div class="contact-handle">
+                <span class="dot"></span>
+                <span>@cylaro</span>
+              </div>
+            </div>
+            <a class="btn btn-primary" href="https://t.me/cylaro" target="_blank" rel="noopener noreferrer">
+              Открыть чат в Telegram
+            </a>
+          </div>
+          <div class="contact-footer">
+            Автор не связан официально ни с одной из перечисленных компаний. Это независимый просветительский проект.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-row">
+        <div>© <span id="year"></span> Гид по нейросетям. Все торговые марки принадлежат их правообладателям.</div>
+        <div>Информация актуальна на момент обновления, но ИИ-сервисы быстро развиваются и могут меняться.</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Текущий год в футере
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Фильтрация карточек
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const cards = document.querySelectorAll(".model-card");
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const filter = btn.getAttribute("data-filter");
+
+      filterButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      cards.forEach(card => {
+        const categories = (card.getAttribute("data-category") || "").split(/\s+/);
+        const show = filter === "all" || categories.includes(filter);
+        card.style.display = show ? "" : "none";
+      });
+    });
+  });
+
+  // Анимация появления карточек при скролле с fallback для старых браузеров
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    cards.forEach(card => observer.observe(card));
+  } else {
+    // Если IntersectionObserver не поддерживается — просто показываем все карточки
+    cards.forEach(card => card.classList.add("visible"));
+  }
+</script>
+</body>
+</html>
