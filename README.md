@@ -1,2 +1,2 @@
 # neuro-guide
-HI
+Guide about Artificial Intelligence
